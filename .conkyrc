@@ -1,0 +1,92 @@
+conky.config = {
+	
+	alignment = 'top_right',
+	gap_y = 50,
+	update_interval = 1,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	out_to_console = false,
+	override_utf8_locale = true,
+	double_buffer = true,
+	no_buffers = true,
+	text_buffer_size = 32768,
+	imlib_cache_size = 0,
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_argb_visual = true,
+--	own_window_argb_value = 100, --50,
+--	own_window_colour = 'grey',
+	own_window_colour = '#000000',
+	own_window_transparent = true,
+
+	own_window_hints = 'undecorated,above,sticky,skip_taskbar,skip_pager',
+	border_inner_margin = 5,
+	border_outer_margin = 0,
+	xinerama_head = 1,
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = false,
+	use_xft = true,
+	font = 'Ubuntu Mono:size=12',
+	xftalpha = 0.8,
+	uppercase = false,
+	default_color = 'black',
+	minimum_width = 200, minimum_height = 0,
+
+};
+conky.text = [[
+${time %H:%M:%S %Z}${alignr}${time %d-%m-%y} 
+${voffset -16}${font sans-serif:bold:size=18}${alignc}${time %H:%M}${font}
+${voffset 4}${alignc}${time %A %B %d, %Y} 
+${font}${voffset -4} ${font sans-serif:bold:size=10}
+SYSTEM ${hr 2} ${font sans-serif:normal:size=8}
+${color slate grey} $sysname $kernel $alignr ${color } $machine
+${color slate grey} Host:		 $alignr ${color }  $nodename
+${color slate grey} Uptime:		 $alignr ${color } $uptime
+${color slate grey} File System: $alignr ${color } ${fs_type}
+${color slate grey} Processes:	 $alignr ${color } ${execi 1000 ps aux | wc -l}
+${color slate grey} Processes:	 $alignr ${color } $processes
+${color slate grey} Running:	 $alignr ${color } $running_processes
+${color green}
+${font sans-serif:bold:size=10}CPU ${hr 2}
+${font sans-serif:normal:size=8}${execi 1000 grep model /proc/cpuinfo | cut -d : -f2 | tail -1 | sed 's/\s//'}
+${cpugraph 20,106 000000 ddaa00 cpu1} ${cpugraph 20,106 000000 ffffff cpu2}
+${cpugraph 20,106 000000 ffffff cpu3} ${cpugraph 20,106 000000 ffffff cpu4}
+CPU $cpu% ${acpitemp}C
+${cpu cpu1}% ${cpubar 6,80 cpu1}   ${cpu cpu2}% ${cpubar 6,80 cpu2}
+${cpu cpu3}% ${cpubar 6,80 cpu3}   ${cpu cpu4}% ${cpubar 6,80 cpu4}
+
+${font sans-serif:bold:size=10}MEMORY ${font} ${hr 2} ${font sans-serif:normal:size=8}
+RAM   $mem / $memmax  $alignr $memperc%  ${membar 6,80}
+SWAP  ${swap} / ${swapmax} $alignr $swapperc%  ${swapbar 6,80}
+
+${font sans-serif:bold:size=10}DISK USAGE ${hr 2} ${font sans-serif:normal:size=8}
+/	 ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%  ${fs_bar 6,80 /}
+/u01  ${fs_used /u01} / ${fs_size /u01} $alignr ${fs_used_perc /u01}%  ${fs_bar 6,80 /u01}
+
+${font Ubuntu:bold:size=10}NETWORK ${hr 2}
+${font sans-serif:normal:size=8}Local IPs:${alignr}External IP:
+${execi 1000 ip a | grep inet | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g'}  ${alignr}${execi 1000  wget -q -O- http://ipecho.net/plain; echo}
+${font sans-serif:normal:size=8}Down: ${downspeed wlp2s0}  ${alignr}Up: ${upspeed wlp2s0} 
+${downspeedgraph wlp2s0 20,106 } ${alignr}${upspeedgraph wlp2s0 20,106 }
+${memgraph 20,106 000000 ddaa00 }
+
+${font Ubuntu:bold:size=10}TOP PROCESSES ${hr 2}${font sans-serif:normal:size=8}
+CPU Processes $alignr PID   CPU%   MEM%
+${top name 1} $alignr ${top pid 1} ${top cpu 1}% ${top mem 1}%
+${top name 2} $alignr ${top pid 2} ${top cpu 2}% ${top mem 2}%
+${top name 3} $alignr ${top pid 3} ${top cpu 3}% ${top mem 3}%
+${top name 4} $alignr ${top pid 4} ${top cpu 4}% ${top mem 4}%
+${top name 5} $alignr ${top pid 5} ${top cpu 5}% ${top mem 5}%
+${top name 6} $alignr ${top pid 6} ${top cpu 6}% ${top mem 6}%
+${top name 7} $alignr ${top pid 7} ${top cpu 7}% ${top mem 7}%
+${top name 8} $alignr ${top pid 8} ${top cpu 8}% ${top mem 8}%
+${top name 9} $alignr ${top pid 9} ${top cpu 9}% ${top mem 9}%
+
+${font Ubuntu:bold:size=10}${color slate grey}Highest MEM:${font sans-serif:normal:size=8}
+${color #ddaa00}${top_mem name 1}    $alignr ${top_mem mem 1}                    
+${color slate grey}${top_mem name 2} $alignr ${top_mem mem 2}                    
+${color slate grey}${top_mem name 3} $alignr ${top_mem mem 3}                    
+${color slate grey}${top_mem name 4} $alignr ${top_mem mem 4}                    
+]];
